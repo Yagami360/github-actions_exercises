@@ -2,6 +2,8 @@
 他の一般的な CI/CD ツールと同様にして、リポジトリに対するプッシュやプルリクエストといった操作、もしくは指定した時刻になるといったイベントをトリガーとして、あらかじめ定義しておいた処理を実行することで CI/CD を実現できる。<br> 
 GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用料金も無料。CI/CD ツールとしては、現状 GitHub Actions を使うのがベストっぽい。
 
+[![build and deploy on mac](https://github.com/Yagami360/github-actions_exercises/workflows/build%20and%20deploy%20on%20mac/badge.svg)](https://github.com/Yagami360/github-actions_exercises/actions?query=workflow%3A%22build+and+deploy+on+mac%22)
+
 ## ■ GitHub Actions の基礎事項
 
 - Workflow（ワークフロー）<br>
@@ -28,6 +30,9 @@ GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用
 1. GitHub リポジトリの Actions タブから、実行されたワークフローのログを確認<br>
     <img src="https://user-images.githubusercontent.com/25688193/106348714-90cbd680-630b-11eb-833c-d242256392d4.png" width="500"><br>
     <img src="https://user-images.githubusercontent.com/25688193/106348762-0172f300-630c-11eb-997a-8f2515714790.png" width="500"><br>
+1. ワークフローステータスのバッジ（badge）を表示したい場合は、各ワークフローの「Create status badge」ボタンをクリックして画像リンクを取得して、`README.md` などに貼り付ける。<br>
+    <img src="https://user-images.githubusercontent.com/25688193/106349657-ff606280-6312-11eb-8d07-a00ec899e05b.png" width="500"><br>
+    この際に、得られた画像リンクを `[${画像リンク}](${ワークフローのリンク})` の形式に置き換えることにより、画像ボタンをクリックすることで該当するワークフローに飛べるようにしておくと便利。
 
 ## ■ Workflow ファイル（yaml形式）の中身
 
