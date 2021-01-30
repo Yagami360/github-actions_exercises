@@ -19,4 +19,5 @@ jobs:
           pip install opencv-python
       - name: Run test scripts
         run:
-          python src/test.py --debug
+          cd src
+          python test.py --debug

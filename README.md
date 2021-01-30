@@ -38,47 +38,29 @@ GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用
 
 - Workflow ファイルの設定例
     ```yml
-    name: Build and Deploy  # ワークフローの名前
-    on:                     # ワークフローをトリガーするイベントを定義
-        push:                       # master ブランチに新しいコードが push された時にトリガー
-            branches:
-            - master
-    jobs:                   # job（ワークフローの中で実行される処理のひとまとまり）を定義。
-        build:                      # Build ジョブを定義 
-            name: Build
-            runs-on: ubuntu-latest      # ジョブを実行するマシン
-            steps:                      # ジョブの step（ジョブの中で実行される一連のタスク）を定義
-            - name: Checkout Repo
-                uses: actions/checkout@master   # use タグで使用する Actions を指定 / actions/checkout という GitHub リポジトリにあるアクションの master ブランチのコードを使用
-            - name: Install Dependencies
-                run: npm install                # run タグで使用するシェルコマンドを指定 / 
-            - name: Build
-                run: npm run build
-            - name: Archive Production Artifact
-                uses: actions/upload-artifact@master
-                with:
-                name: public
-                path: public    
-        deploy:                     # Deploy ジョブを定義 
-            name: Deploy
-            needs: build
-            runs-on: ubuntu-latest
-            steps:
-            - name: Checkout Repo
-                uses: actions/checkout@master           # 使用する Action を定義。
-            - name: Download Artifact
-                uses: actions/download-artifact@master
-                with:
-                name: public
-                path: public
-            - name: Deploy to Firebase
-                uses: w9jds/firebase-action@master
-                with:
-                args: deploy
-                env:
-                FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-            - name: run_shell
-                run:                                    # 使用するシェルコマンドを定義
+    name: build and deploy on mac   # ワークフローの名前
+    on: [push]                      # ワークフローをトリガーするイベントを定義 / 新しいコードが push された時にトリガー
+    jobs:                           # job（ワークフローの中で実行される処理のひとまとまり）を定義。
+    build:                          # Build ジョブを定義 
+      name: Build         
+      runs-on: macos-latest       # ジョブを実行するマシン
+      steps:
+      - uses:                         # use タグで使用する Actions を指定
+        actions/checkout@v2             # actions/v2 という GitHub リポジトリにあるアクションの v2 ブランチのコードを使用
+      - name: Setup python 3.6        # python 環境の構築
+        uses: actions/setup-python@v2
+        with:
+        python-version: '3.6.9'
+        architecture: x64
+      - name: Install dependencies    # 依存ライブラリのインストール
+        run:                            # run タグで使用するシェルコマンドを指定 / 
+          python -m pip install --upgrade pip
+          pip install tqdm
+          pip install Pillow
+          pip install opencv-python
+      - name: Run test scripts        # テストスクリプトの自動実行
+        run:
+          python src/test.py --debug
     ```
 
 ### ◎ on トリガー（ワークフローの起動トリガー）
@@ -96,16 +78,45 @@ GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用
 - push する branch も指定する場合<br>
     ```yml
     on:                     # ワークフローをトリガーするイベント
-        push:                   # master ブランチに新しいコードが push された時にトリガー
-            branches:
-            - master
+      push:                   # master ブランチに新しいコードが push された時にトリガー
+        branches:
+          - master
     ```
 
-### ◎ Build ジョブ
-xxx
+### ◎ ジョブ
 
-### ◎ Deploy ジョブ
-xxx
+- ジョブの設定例
+    ```yml
+    build:                          # ジョブIDを定義 
+      name: Build         
+      runs-on: macos-latest         # ジョブを実行するマシン
+      steps:
+      - uses:                         # use タグで実行する Actions を指定
+        actions/checkout@v2             # actions/v2 という GitHub リポジトリにあるアクションの v2 ブランチのコードを使用
+      - name: Setup python 3.6        # python 環境の構築
+        uses: actions/setup-python@v2
+        with:
+        python-version: '3.6.9'
+        architecture: x64
+      - name: Install dependencies    # 依存ライブラリのインストール
+        run:                            # run タグで実行するシェルコマンドを指定 / 
+          python -m pip install --upgrade pip
+          pip install tqdm
+          pip install Pillow
+          pip install opencv-python
+      - name: Run test scripts        # テストスクリプトの自動実行
+        run:
+          python src/test.py --debug
+    ```
+
+- `jobs.${JOB_ID}` : ジョブを一意に特定するためのID。上記例では `JOB_ID=build`
+- `jobs.${JOB_ID}.runs-on` : ジョブを実行するマシンを定義
+    - `ubuntu-latest` : Ubuntu
+    - `macos-latest` : MacOS
+- `jobs.${JOB_ID}.steps` : ステップを定義
+- `jobs.${JOB_ID}.steps.run` : 実行するシェルコマンド
+- `jobs.${JOB_ID}.steps.uses` : 実行する Action を定義
+
 
 ## ■ 参考サイト
 - https://docs.github.com/ja/actions/quickstart
