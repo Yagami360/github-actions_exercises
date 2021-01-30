@@ -43,22 +43,22 @@ GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用
     jobs:                           # job（ワークフローの中で実行される処理のひとまとまり）を定義。
     build:                          # Build ジョブを定義 
       name: Build         
-      runs-on: macos-latest       # ジョブを実行するマシン
+      runs-on: macos-latest         # ジョブを実行するマシン
       steps:
-      - uses:                         # use タグで使用する Actions を指定
-        actions/checkout@v2             # actions/v2 という GitHub リポジトリにあるアクションの v2 ブランチのコードを使用
-      - name: Setup python 3.6        # python 環境の構築
+      - uses:                           # use タグで使用する Actions を指定
+        actions/checkout@v2                 # actions/v2 という GitHub リポジトリにあるアクションの v2 ブランチのコードを使用
+      - name: Setup python 3.6          # python 環境の構築
         uses: actions/setup-python@v2
         with:
         python-version: '3.6.9'
         architecture: x64
-      - name: Install dependencies    # 依存ライブラリのインストール
-        run:                            # run タグで使用するシェルコマンドを指定 / 
+      - name: Install dependencies      # 依存ライブラリのインストール
+        run:                                # run タグで使用するシェルコマンドを指定 / 
           python -m pip install --upgrade pip
           pip install tqdm
           pip install Pillow
           pip install opencv-python
-      - name: Run test scripts        # テストスクリプトの自動実行
+      - name: Run test scripts          # テストスクリプトの自動実行
         run:
           python src/test.py --debug
     ```
@@ -78,7 +78,7 @@ GitHub だけで CI/CD 的な機能を実現できるのがメリット。利用
 - push する branch も指定する場合<br>
     ```yml
     on:                     # ワークフローをトリガーするイベント
-      push:                   # master ブランチに新しいコードが push された時にトリガー
+      push:                 # master ブランチに新しいコードが push された時にトリガー
         branches:
           - master
     ```

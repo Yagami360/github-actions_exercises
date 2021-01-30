@@ -22,6 +22,9 @@ if __name__ == '__main__':
 
         print( "OpenCV version : ", cv2.__version__ )
 
+    if not os.path.isdir(args.out_image_dir):
+        os.mkdir(args.out_image_dir)
+        
     image_names = sorted( [f for f in os.listdir(args.in_image_dir) if f.endswith(IMG_EXTENSIONS)] )
     for image_name in tqdm(image_names):
         in_image_full_path = os.path.join(args.in_image_dir, image_name)
