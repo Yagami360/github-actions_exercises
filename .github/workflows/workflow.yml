@@ -5,8 +5,8 @@ on:
       - '.github/workflows/*'  
       - 'api/*'        
 jobs:
-  build:
-    name: Build
+  build_and_deploy:
+    name: build and deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,15 +21,10 @@ jobs:
           pip install tqdm
           pip install Pillow
           pip install requests
-      - name: check docker container
-        shell: bash
-        run:
-          docker ps -a
       - name: run api with docker compose
         shell: bash
         run:
           docker-compose -f api/docker-compose.yml up -d
       - name: run request
         run:
-          cd api
-          python request.py --host 0.0.0.0 --port 5000 --request_value 1 --debug
+          python api/request.py --host 0.0.0.0 --port 5000 --request_value 1 --debug
