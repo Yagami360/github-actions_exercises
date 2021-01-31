@@ -1,5 +1,8 @@
 name: build and deploy on mac
-on: [push]
+on:
+  push:
+    paths:
+      - 'src/*.py'  # python ファイルの push のみをトリガー
 jobs:
   build:
     name: Build
