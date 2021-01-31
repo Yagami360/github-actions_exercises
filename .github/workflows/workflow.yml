@@ -21,10 +21,13 @@ jobs:
           pip install tqdm
           pip install Pillow
           pip install requests
-      - name: run api with docker compose
+      - name: check docker container
         shell: bash
         run:
           docker ps -a
+      - name: run api with docker compose
+        shell: bash
+        run:
           docker-compose -f api/docker-compose.yml up -d
       - name: run request
         run:
