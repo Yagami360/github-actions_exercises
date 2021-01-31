@@ -2,7 +2,7 @@ name: build and deploy api on local env
 on:
   push:
     paths:
-      - 'workflows/*'  
+      - '.github/workflows/*'  
       - 'api/*'        
 jobs:
   build:
