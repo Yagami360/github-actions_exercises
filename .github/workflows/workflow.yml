@@ -2,7 +2,8 @@ name: build and deploy api on local env
 on:
   push:
     paths:
-      - 'api/*'  # API コードの push のみをトリガー
+      - 'workflows/*'  
+      - 'api/*'        
 jobs:
   build:
     name: Build
