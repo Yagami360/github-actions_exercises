@@ -22,9 +22,8 @@ jobs:
           pip install requests
       - name: run api with docker compose
         run:
-          docker-compose -f api/docker-compose.yml stop
           docker-compose -f api/docker-compose.yml up -d
       - name: run request
         run:
           cd api
-          python request.py --host 0.0.0.0 --port 5000 --debug
+          python request.py --host 0.0.0.0 --port 5000 --request_value 1 --debug
